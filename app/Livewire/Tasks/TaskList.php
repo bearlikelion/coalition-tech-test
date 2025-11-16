@@ -24,8 +24,7 @@ class TaskList extends Component
     protected $rules = [
         'newTaskName' => 'required|string|max:255',
         'newTaskPriority' => 'nullable|integer|min:1',
-        'selectedProjectId' => 'required|exists:projects,id',
-        'editingTaskName' => 'required|string|min:1|max:255',
+        'selectedProjectId' => 'required|exists:projects,id'        
     ];
 
     public function getTasksProperty()
@@ -41,11 +40,7 @@ class TaskList extends Component
 
     public function addTask()
     {
-        $this->validate([
-            'newTaskName' => 'required|string|max:255',
-            'newTaskPriority' => 'nullable|integer|min:1',
-            'selectedProjectId' => 'required|exists:projects,id',
-        ]);
+        $this->validate();
 
         $priority = $this->newTaskPriority ?? (Task::max('priority') + 1);
 
@@ -76,7 +71,9 @@ class TaskList extends Component
 
     public function updateTask()
     {
-        $this->validateOnly('editingTaskName');
+        $this->validate([
+            'editingTaskName' => 'required|string|min:1|max:255',            
+        ]);
 
         $task = Task::findOrFail($this->editingTaskId);
         $task->update(['name' => $this->editingTaskName]);
