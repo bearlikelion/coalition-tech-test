@@ -24,7 +24,7 @@ class ProjectTaskSeeder extends Seeder
 
         foreach ($projects as $projectName) {
             $project = Project::create(['name' => $projectName]);
-            
+
             for ($i = 1; $i <= 5; $i++) {
                 // Fake task creation
                 Task::create([

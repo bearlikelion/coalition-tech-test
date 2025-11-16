@@ -2,27 +2,31 @@
     <label for="addTaskForm" class="block mb-2 font-medium text-gray-700">Add New Task:</label>
 
     <!-- Create Task Form -->
-    <form name="addTaskForm" wire:submit.prevent="addTask" class="mb-4">
-        <input type="text" wire:model="newTaskName" placeholder="New Task Name" class="border p-2 rounded w-full" />
-        @error('newTaskName')
-            <span class="text-red-500">{{ $message }}</span>
-        @enderror
-        <select wire:model="selectedProjectId" class="border p-2 rounded w-full mt-2">
-            <option value="">Select Project</option>
-            @foreach ($projects as $project)
-                <option value="{{ $project->id }}">{{ $project->name }}</option>
-            @endforeach
-        </select>
-        @error('selectedProjectId')
-            <span class="text-red-500">{{ $message }}</span>
-        @enderror
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded mt-2">Create Task</button>
-    </form>
+    <div>
+        <form name="addTaskForm" wire:submit.prevent="addTask" class="mb-4">
+            <input type="text" wire:model="newTaskName" placeholder="New Task Name" class="border p-2 rounded w-full" />
+            @error('newTaskName')
+                <span class="text-red-500">{{ $message }}</span>
+            @enderror
+            <input type="number" wire:model="newTaskPriority" placeholder="Task Priority" class="border p-2 rounded w-full mt-2" min="1" />
+            @error('newTaskPriority')
+                <span class="text-red-500">{{ $message }}</span>
+            @enderror
+            <select wire:model="selectedProjectId" class="border p-2 rounded w-full mt-2">
+                <option value="">Select Project</option>
+                @foreach ($projects as $project)
+                    <option value="{{ $project->id }}">{{ $project->name }}</option>
+                @endforeach
+            </select>
+            @error('selectedProjectId')
+                <span class="text-red-500">{{ $message }}</span>
+            @enderror
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded mt-2">Create Task</button>
+        </form>
+    </div>
 
     <!-- Project Filter Selector -->
-    <div class="mb-6">
-        <livewire:projects.project-selector />
-    </div>
+    <livewire:projects.project-selector />
 
     <!-- Task List with Drag-and-Drop -->
     <div wire:sortable="updateTaskOrder">
@@ -44,6 +48,7 @@
                         <span class="mr-2">{{ $task->name }}</span>
                     @endif
                     <span class="text-sm text-gray-400">({{ $task->project->name }})</span>
+                    <span class="text-xs text-gray-400 ml-2"> {{ $task->updated_at->diffForHumans() }}</span>
                 </span>
                 <span class="content-right">
                     <button wire:click="editTask({{ $task->id }})"

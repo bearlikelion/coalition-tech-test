@@ -10,7 +10,9 @@
 * Database: SQLite
 
 ### Deployment
-Required [Docker](https://www.docker.com/) be installed on he system. Extract the .zip or `git clone` the git repository and simply run:
+Requires [Docker](https://www.docker.com/) be installed on the system. 
+
+Extract the .zip or `git clone` the git repository, open terminal and run:
 
 ```
 sail up -d
@@ -28,3 +30,5 @@ Once the migrations complete, you can seed the database with example database by
 ```
 sail artisan db:seed
 ```
+
+Visit http://localhost to view the application

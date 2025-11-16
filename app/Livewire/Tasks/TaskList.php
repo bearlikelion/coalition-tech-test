@@ -8,7 +8,7 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
-class TaskController extends Component
+class TaskList extends Component
 {
     #[Url]
     public $selectedProjectId = '';
@@ -87,7 +87,7 @@ class TaskController extends Component
         $task = Task::findOrFail($taskId);
         $task->delete();
         $this->reorderTasksAfterDeletion();
-        $this->dispatch('taskUpdated');        
+        $this->dispatch('taskUpdated');
     }
 
     protected function reorderTasksAfterDeletion()
@@ -100,7 +100,7 @@ class TaskController extends Component
     }
 
     public function updateTaskOrder($items)
-    {        
+    {
         foreach ($items as $index => $item) {
             $task = Task::find($item['value']);
             if ($task) {
@@ -119,7 +119,7 @@ class TaskController extends Component
 
     public function render()
     {
-        return view('livewire.tasks.task-controller', [
+        return view('livewire.tasks.task-list', [
             'tasks' => $this->tasks,
             'projects' => Project::all(),
         ]);

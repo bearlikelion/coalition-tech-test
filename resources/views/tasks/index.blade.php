@@ -4,7 +4,7 @@
             <h1 class="text-2xl font-bold mb-4 text-center">Task Management</h1>          
 
             <!-- Task Management -->
-            <livewire:tasks.task-controller />
+            <livewire:tasks.task-list />
         </div>
     </div>
 </x-layouts>
