@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Tasks;
 
 use App\Models\Project;
 use App\Models\Task;
@@ -90,7 +90,7 @@ class TaskController extends Component
     }
 
     public function updateTaskOrder($orderedIds)
-    {
+    {        
         foreach ($orderedIds as $index => $id) {
             Task::where('id', $id)->update(['priority' => $index + 1]);
         }
@@ -105,7 +105,7 @@ class TaskController extends Component
 
     public function render()
     {
-        return view('livewire.tasks.task', [
+        return view('livewire.tasks.task-controller', [
             'tasks' => $this->tasks,
             'projects' => Project::all(),
         ]);

@@ -7,6 +7,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles()
     </head>
+    
     <body class="bg-gray-100 min-h-screen flex flex-col">        
         <div class="flex flex-col min-h-screen">
             {{-- @include('components.layouts.navbar') --}}
