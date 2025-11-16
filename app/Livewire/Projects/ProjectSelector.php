@@ -12,7 +12,7 @@ class ProjectSelector extends Component
     public $selectedProjectId = '';
 
     public function updateSelectedProjectId($value)
-    {        
+    {
         $this->dispatch('projectChanged', projectId: $value);
     }
 

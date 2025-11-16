@@ -89,10 +89,14 @@ class TaskController extends Component
         $this->dispatch('taskUpdated');
     }
 
-    public function updateTaskOrder($orderedIds)
-    {        
-        foreach ($orderedIds as $index => $id) {
-            Task::where('id', $id)->update(['priority' => $index + 1]);
+    public function updateTaskOrder($items)
+    {
+        foreach ($items as $index => $item) {
+            $task = Task::find($item['value']);
+            if ($task) {
+                $task->priority = $index + 1;
+                $task->save();
+            }
         }
         $this->dispatch('taskUpdated');
     }
