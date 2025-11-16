@@ -7,7 +7,7 @@ use App\Models\Task;
 use Illuminate\Database\Seeder;
 
 class ProjectTaskSeeder extends Seeder
-{    
+{
     /**
      * Run the database seeds.
      */
