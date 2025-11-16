@@ -4,8 +4,8 @@ namespace App\Livewire;
 
 use App\Models\Project;
 use App\Models\Task;
-use Livewire\Attributes\Url;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class TaskController extends Component
@@ -14,7 +14,9 @@ class TaskController extends Component
     public $selectedProjectId = '';
 
     public $newTaskName = '';
+
     public $editingTaskId = null;
+
     public $editingTaskName = '';
 
     protected $rules = [
@@ -33,17 +35,17 @@ class TaskController extends Component
         return $query->orderBy('priority')->get();
     }
 
-
     public function addTask()
     {
         $this->validateOnly('newTaskName');
 
         $projectId = $this->selectedProjectId ?: Project::first()?->id;
 
-        if (!$projectId) {
+        if (! $projectId) {
             $this->addError('newTaskName', 'Please create a project before adding tasks.');
+
             return;
-        }   
+        }
 
         Task::create([
             'name' => $this->newTaskName,
@@ -55,14 +57,12 @@ class TaskController extends Component
         $this->dispatch('taskUpdated');
     }
 
-
     public function editTask($taskId)
     {
         $task = Task::findOrFail($taskId);
         $this->editingTaskId = $task->id;
         $this->editingTaskName = $task->name;
     }
-
 
     public function updateTask()
     {
@@ -76,13 +76,11 @@ class TaskController extends Component
         $this->dispatch('taskUpdated');
     }
 
-
     public function cancelEdit()
     {
         $this->editingTaskId = null;
         $this->editingTaskName = '';
     }
-
 
     public function deleteTask($taskId)
     {
@@ -90,7 +88,6 @@ class TaskController extends Component
         $task->delete();
         $this->dispatch('taskUpdated');
     }
-
 
     public function updateTaskOrder($orderedIds)
     {
@@ -100,16 +97,17 @@ class TaskController extends Component
         $this->dispatch('taskUpdated');
     }
 
-
     #[On('projectChanged')]
     public function handleProjectChanged($projectId)
     {
         $this->selectedProjectId = $projectId;
     }
 
-
     public function render()
-    {        
-        return view('livewire.tasks.task-controller');
+    {
+        return view('livewire.tasks.task', [
+            'tasks' => $this->tasks,
+            'projects' => Project::all(),
+        ]);
     }
 }

@@ -7,17 +7,16 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles()
     </head>
-    <body class="bg-gray-100 min-h-screen flex flex-col">
-        {{ $slot }}
-    <div class="flex flex-col min-h-screen">
-        {{-- @include('components.layouts.navbar') --}}
+    <body class="bg-gray-100 min-h-screen flex flex-col">        
+        <div class="flex flex-col min-h-screen">
+            {{-- @include('components.layouts.navbar') --}}
 
-        <main class="flex-grow container mx-auto px-4 py-6">
-            {{ $slot }}
-        </main>
+            <main class="flex-grow container mx-auto px-4 py-6">
+                {{ $slot }}
+            </main>
 
-        {{-- @include('components.layouts.footer') --}}
-    </div>
-    @livewireScripts()
-</body>
+            {{-- @include('components.layouts.footer') --}}
+        </div>
+        @livewireScripts()
+    </body>
 </html>
