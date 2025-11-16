@@ -15,12 +15,16 @@ class TaskList extends Component
 
     public $newTaskName = '';
 
+    public $newTaskPriority = null;
+
     public $editingTaskId = null;
 
     public $editingTaskName = '';
 
     protected $rules = [
         'newTaskName' => 'required|string|max:255',
+        'newTaskPriority' => 'nullable|integer|min:1',
+        'selectedProjectId' => 'required|exists:projects,id',
         'editingTaskName' => 'required|string|min:1|max:255',
     ];
 
@@ -37,24 +41,30 @@ class TaskList extends Component
 
     public function addTask()
     {
-        $this->validateOnly('newTaskName');
+        $this->validate([
+            'newTaskName' => 'required|string|max:255',
+            'newTaskPriority' => 'nullable|integer|min:1',
+            'selectedProjectId' => 'required|exists:projects,id',
+        ]);
 
-        $projectId = $this->selectedProjectId ?: Project::first()?->id;
+        $priority = $this->newTaskPriority ?? (Task::max('priority') + 1);
 
-        if (! $projectId) {
-            $this->addError('newTaskName', 'Please create a project before adding tasks.');
-
-            return;
+        // If a specific priority is set, shift all tasks at or after that priority down
+        if ($this->newTaskPriority) {
+            Task::where('priority', '>=', $this->newTaskPriority)->increment('priority');
         }
 
         Task::create([
             'name' => $this->newTaskName,
-            'project_id' => $projectId,
-            'priority' => Task::max('priority') + 1,
+            'project_id' => $this->selectedProjectId,
+            'priority' => $priority,
         ]);
 
         $this->newTaskName = '';
+        $this->newTaskPriority = null;
+        $this->selectedProjectId = '';
         $this->dispatch('taskUpdated');
+        $this->dispatch('projectChanged', projectId: '');
     }
 
     public function editTask($taskId)
@@ -72,7 +82,7 @@ class TaskList extends Component
         $task->update(['name' => $this->editingTaskName]);
 
         $this->editingTaskId = null;
-        $this->editingTaskName = '';
+        $this->editingTaskName = '';        
         $this->dispatch('taskUpdated');
     }
 
@@ -86,11 +96,11 @@ class TaskList extends Component
     {
         $task = Task::findOrFail($taskId);
         $task->delete();
-        $this->reorderTasksAfterDeletion();
+        $this->reorderTasks();
         $this->dispatch('taskUpdated');
     }
 
-    protected function reorderTasksAfterDeletion()
+    protected function reorderTasks()
     {
         $tasks = Task::orderBy('priority')->get();
         foreach ($tasks as $index => $task) {
@@ -112,7 +122,7 @@ class TaskList extends Component
     }
 
     #[On('projectChanged')]
-    public function handleProjectChanged($projectId)
+    public function updateSelectedProjectId($projectId)
     {
         $this->selectedProjectId = $projectId;
     }

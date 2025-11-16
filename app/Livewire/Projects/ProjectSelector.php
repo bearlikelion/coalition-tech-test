@@ -10,7 +10,7 @@ class ProjectSelector extends Component
 {
     #[Url]
     public $selectedProjectId = '';
-
+    
     public function updateSelectedProjectId($value)
     {
         $this->dispatch('projectChanged', projectId: $value);

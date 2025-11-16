@@ -13,15 +13,15 @@
                 <span class="text-red-500">{{ $message }}</span>
             @enderror
             <select wire:model="selectedProjectId" class="border p-2 rounded w-full mt-2">
-                <option value="">Select Project</option>
+                <option value="">Select a Project</option>
                 @foreach ($projects as $project)
                     <option value="{{ $project->id }}">{{ $project->name }}</option>
                 @endforeach
             </select>
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded mt-2">Create Task</button>
             @error('selectedProjectId')
                 <span class="text-red-500">{{ $message }}</span>
             @enderror
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded mt-2">Create Task</button>
         </form>
     </div>
 
