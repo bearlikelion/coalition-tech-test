@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Livewire\TaskController;
 
 Route::redirect('/', '/tasks');
-
-// Volt::route('/tasks', 'tasks.index')->name('tasks.index');
+Route::get('/tasks', TaskController::class)->name('tasks.index');
