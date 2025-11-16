@@ -86,11 +86,21 @@ class TaskController extends Component
     {
         $task = Task::findOrFail($taskId);
         $task->delete();
-        $this->dispatch('taskUpdated');
+        $this->reorderTasksAfterDeletion();
+        $this->dispatch('taskUpdated');        
+    }
+
+    protected function reorderTasksAfterDeletion()
+    {
+        $tasks = Task::orderBy('priority')->get();
+        foreach ($tasks as $index => $task) {
+            $task->priority = $index + 1;
+            $task->save();
+        }
     }
 
     public function updateTaskOrder($items)
-    {
+    {        
         foreach ($items as $index => $item) {
             $task = Task::find($item['value']);
             if ($task) {

@@ -20,15 +20,17 @@ class ProjectTaskSeeder extends Seeder
             'Open Source',
         ];
 
+        $priority = 1;
+
         foreach ($projects as $projectName) {
             $project = Project::create(['name' => $projectName]);
-
+            
             for ($i = 1; $i <= 5; $i++) {
                 // Fake task creation
                 Task::create([
                     'project_id' => $project->id,
                     'name' => $faker->sentence(4),
-                    'priority' => $i,
+                    'priority' => $priority++,
                 ]);
             }
         }
