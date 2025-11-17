@@ -48,7 +48,7 @@
                         <span class="mr-2">{{ $task->name }}</span>
                     @endif
                     <span class="text-sm text-gray-400">({{ $task->project->name }})</span>
-                    <span class="text-xs text-gray-400 ml-2"> {{ $task->updated_at->diffForHumans() }}</span>
+                    <span class="text-xs text-gray-400 ml-2"> {{ $task->created_at->diffForHumans() }}</span>
                 </span>
                 <span class="content-right">
                     <button wire:click="editTask({{ $task->id }})"
